@@ -1,0 +1,12 @@
+http://localhost:8010 {
+    root * /srv/app/public
+    php_fastcgi unix//var/run/php/php-fpm.sock
+    encode zstd gzip
+    file_server
+}
+
+http://localhost {
+    reverse_proxy vuejs:8080
+    root * /srv/vuejs/public
+    file_server
+}
