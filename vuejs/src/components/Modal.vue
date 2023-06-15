@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-modal v-model="show" :id="id" :title=title ok-only ok-variant="secondary" ok-title="Cancel">
+        <b-modal size="lg" v-model="show" :id="id" :title=title ok-only ok-variant="secondary" ok-title="Cancel">
             <p v-if="msg" class="my-4">
                 {{ msg }}
             </p>
