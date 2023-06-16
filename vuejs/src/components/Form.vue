@@ -31,7 +31,7 @@ export default {
     data() {
         return {
             show: true,
-            formData: this.form
+            formData: Object
         }
     },
     methods: {
@@ -39,7 +39,9 @@ export default {
             event.preventDefault()
         },
         onSubmit() {
-            this.$emit('changeFormData', this.form)
+            this.formData.uuid = this.form.uuid;
+            this.formData.dateOfCreated = this.form.dateOfCreated;
+            this.$emit('changeFormData', this.formData)
         }
     }
 }
