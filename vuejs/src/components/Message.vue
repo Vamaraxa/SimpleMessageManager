@@ -20,6 +20,6 @@ export default {
     name: 'ApiMessage',
     props: {
         message: Object
-    },
+    }
 }
 </script>

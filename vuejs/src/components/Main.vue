@@ -42,7 +42,7 @@
                                             {{ row.uuid }}
                                         </td>
                                         <td>
-                                            {{ row.dateOfCreated }}
+                                            {{ format_date(row.dateOfCreated) }}
                                         </td>
                                         <td>
                                             <b-button variant="primary" class="mr-3 btn-sm" v-b-modal.modal
@@ -76,6 +76,8 @@ import FormTemplate from './Form.vue';
 
 import ApiMessage from './Message.vue';
 
+import moment from 'moment'
+
 axios.defaults.baseURL = 'http://localhost:8010/';
 
 export default {
@@ -102,8 +104,10 @@ export default {
                 .get(`${uuid}`)
                 .then(response => {
                     this.passedComponent = ApiMessage;
+                    let message = response.data;
+                    message.dateOfCreated = this.format_date(message.dateOfCreated);
                     this.passedProps = {
-                        message: response.data
+                        message: message
                     };
                     this.modalTitle = `Details: ${response.data.uuid}`
                 })
@@ -199,6 +203,12 @@ export default {
             this.sortBy = name;
             this.orderBy = this.orderBy == 'asc' ? 'desc' : 'asc';
             this.loadList(this.sortBy, this.orderBy)
+        },
+        format_date(value) {
+            if (value) {
+                let date = new Date(value * 1000);
+                return moment(date).format('DD-MM-YYYY hh:mm:ss')
+            }
         }
     },
     components: {
