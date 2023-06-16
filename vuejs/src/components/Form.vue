@@ -40,6 +40,9 @@ export default {
         },
         onSubmit() {
             this.formData.uuid = this.form.uuid;
+            if (!this.formData.text) {
+                this.formData.text = this.form.text;
+            }
             this.formData.dateOfCreated = this.form.dateOfCreated;
             this.$emit('changeFormData', this.formData)
         }
