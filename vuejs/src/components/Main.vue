@@ -144,7 +144,7 @@ export default {
                 axios.delete(`${uuid}`)
                     .then(response => {
                         console.log(response);
-                        alert(`Addedd successfull for: ${uuid}`);
+                        alert(`Delete successfull for: ${uuid}`);
                         this.loadList();
                     }).catch(error => {
                         alert(error.response.data.errors)
