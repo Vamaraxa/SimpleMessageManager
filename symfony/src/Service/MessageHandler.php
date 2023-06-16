@@ -22,18 +22,6 @@ class MessageHandler
         $files = new Finder();
         $files->files()->in($this->targetDirectory);
 
-        if ($sortBy) {
-            if ($sortBy == 'dateOfCreated') {
-                $files->sortByAccessedTime();
-            } elseif ($sortBy == 'uuid') {
-                $files->sortByName();
-            }
-
-            if ($orderBy == 'desc') {
-                $files->reverseSorting();
-            }
-        }
-
         $data = [];
         foreach ($files as $file) {
             $parts = explode('_', $file->getFilename());
@@ -44,6 +32,16 @@ class MessageHandler
                     (new DateTime())->setTimestamp($parts[1])
                 )
                 ->toArray();
+        }
+
+        if ($sortBy && $orderBy) {
+            usort($data, (function($a, $b) use ($sortBy) {
+                return $a[$sortBy] > $b[$sortBy];
+            }));
+
+            if ($orderBy == 'desc') {
+                $data = array_reverse($data);
+            }
         }
 
         return $data;

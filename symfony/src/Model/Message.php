@@ -51,7 +51,7 @@ class Message
         return [
             'uuid' => $this->uuid,
             'text' => $this->text,
-            'dateOfCreated' => $this->dateOfCreated
+            'dateOfCreated' => $this->dateOfCreated?->getTimestamp()
         ];
     }
 }
