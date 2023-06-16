@@ -23,13 +23,15 @@
                                     <tr>
                                         <th @click="sortList('uuid')" role="button">
                                             Uuid
-                                            <b-icon-arrow-down v-if="sortBy=='uuid' && orderBy=='desc'"></b-icon-arrow-down>
-                                            <b-icon-arrow-up v-if="sortBy=='uuid' && orderBy=='asc'"></b-icon-arrow-up>
+                                            <b-icon-arrow-down v-if="sortBy == 'uuid' && orderBy == 'desc'"></b-icon-arrow-down>
+                                            <b-icon-arrow-up v-if="sortBy == 'uuid' && orderBy == 'asc'"></b-icon-arrow-up>
                                         </th>
                                         <th @click="sortList('dateOfCreated')" role="button">
                                             DateOfCreated
-                                            <b-icon-arrow-down v-if="sortBy=='dateOfCreated' && orderBy=='desc'"></b-icon-arrow-down>
-                                            <b-icon-arrow-up v-if="sortBy=='dateOfCreated' && orderBy=='asc'"></b-icon-arrow-up>
+                                            <b-icon-arrow-down
+                                                v-if="sortBy == 'dateOfCreated' && orderBy == 'desc'"></b-icon-arrow-down>
+                                            <b-icon-arrow-up
+                                                v-if="sortBy == 'dateOfCreated' && orderBy == 'asc'"></b-icon-arrow-up>
                                         </th>
                                         <th>Action</th>
                                     </tr>
@@ -142,6 +144,7 @@ export default {
                 axios.delete(`${uuid}`)
                     .then(response => {
                         console.log(response);
+                        alert(`Addedd successfull for: ${uuid}`);
                         this.loadList();
                     }).catch(error => {
                         alert(error.response.data.errors)
@@ -155,9 +158,11 @@ export default {
                 ``,
                 formData
             ).then(response => {
-                console.log(response);
                 this.loadList();
                 this.closeModal();
+                alert(`Addedd successfull for: ${response.data}`);
+            }).catch(error => {
+                alert(error.response.data.errors);
             })
         },
         editMessage($data) {
@@ -167,15 +172,14 @@ export default {
                 .patch(
                     `${$data.uuid}`,
                     params
-                    ).then(response => {
-                    console.log(response);
-                }).then(response => {
-                    console.log(response);
+                ).then(response => {
+                    alert(`Edit successfull for: ${response.data.uuid}`);
                     this.closeModal();
+                }).catch(error => {
+                    alert(error.response.data.errors);
                 })
         },
-        loadList()
-        {
+        loadList() {
             const params = new URLSearchParams();
             if (this.sortBy && this.orderBy) {
                 params.append('sortBy', this.sortBy);
@@ -183,17 +187,15 @@ export default {
             }
 
             axios
-                .get('', {params})
+                .get('', { params })
                 .then(response => {
                     this.rows = response.data;
                 })
         },
-        closeModal()
-        {
+        closeModal() {
             this.$root.$emit('bv::hide::modal', 'modal')
         },
-        sortList(name)
-        {
+        sortList(name) {
             this.sortBy = name;
             this.orderBy = this.orderBy == 'asc' ? 'desc' : 'asc';
             this.loadList(this.sortBy, this.orderBy)
